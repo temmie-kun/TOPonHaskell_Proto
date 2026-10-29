@@ -1,0 +1,20 @@
+model: qwen2.5-coder:3b
+
+description:
+  "The program consists of a personal library of BibTEX entries. 
+  It allows to save entries, list all previously saved and search entries with specific content.
+  The content of the entries are saved on a file named library.bib with all the bib entries. 
+  This file is persisted even on different runs of the program. An entry can span into multiple lines.
+  At the start of the program, if the file does not exist, it should be created.
+  Use unittest as testing library."
+
+acceptance_tests:
+  "When the program is invoked with the list option and the library.bib file has some entries, 
+  all the entries saved on the file should be returned.
+  When the program is invoked with the add option passing the path of a file containing a BibTEX entry, 
+  the entry should be stored on the library.bib file.
+  When a BibTEX entry is saved on library.bib file,, 
+  it should be returned if the program is invoked with the search option with a word from the BibTEX entry.
+  When a BibTEX entry is saved on library.bib file,
+  it should be returned among the entries returned if the program is invoked with the list option."
+

@@ -1,0 +1,86 @@
+---------------------------------------------------------------------------------
+
+☆外から変更したい(ハードコードすべきではない)もの
+・操作(actions)
+・LLMのモデル
+・与えるプロンプト
+
+---------------------------------------------------------------------------------
+
+stack run ...
+
+
+---------------------------------------------------------------------------------
+
+後からプロンプトを編集できるようにプロンプトごとのYAMLも用意するべき？
+
+-- This is a prompt for :
+-- Generating a structure file from specification file
+prompt4Structure = "仕様書は次である:... 
+                    仕様書から構造ファイル"Structure.yaml"を以下のテンプレに沿って生成: ..."
+
+-- This is a prompt for :
+-- Generating an acceptance test code from structure file
+prompt4Acceptance = "構造ファイルは次である:
+                     構造ファイルから受け入れテスト"acceptanceSpec.hs"をHspecで生成: ..."
+
+-- This is a prompt for :
+-- Generating a module test code from structure file
+prompt4ModuleTest = "構造ファイルは次である:
+                     構造ファイルからモジュールテスト"○○Spec.hs"をHspecで生成: ..."
+
+-- This is a prompt for :
+-- Generating an implementation from test file
+prompt4Acceptance = "テストファイルは次である:
+                     これを満たすモジュールを生成: ..."
+
+
+main :: IO ()
+main = do
+
+    generateByLLM model prompt4Structure "Structure.yaml"
+    続行確認
+    
+    createStructure "Structure.yaml"
+    generateByLLM model prompt4Acceptance "AcceptanceSpec.hs"
+    続行確認，ここで仕様スメル的なのを警告(テストコード内orコンソール)
+
+    generateByLLM model prompt4ModuleTest "(modulename)Spec.hs"
+    続行確認，ここで仕様スメル的なのを警告(テストコード内orコンソール)
+
+    generateByLLM model prompt4Code "(each module).hs"
+    runTest "(each module)Spec.hs"
+    反復生成
+
+    runTest "AcceptanceSpec.hs"
+
+
+---------------------------------------------------------------------------------
+
+
+◎TOP
+・仕様書 -> 構造 -> テスト -> 実装 -> 検証
+
+〇仕様書
+・開発者が作る
+
+〇構造
+・仕様書　　　　をLLMに渡し　構造ファイル　を得る
+・構造ファイル　を基に　　　　　　　　　　 ファイル構成を自動生成
+
+〇テスト生成
+・仕様書　　　　をLLMに渡し　受け入れテスト　　を得る
+・構造ファイル　をLLMに渡し　モジュールテスト　を得る
+
+〇実装生成
+・モジュールテスト　をLLMに渡し　実装コード　を得る
+
+〇検証
+・実装コード　を　モジュールテスト　で検証
+・実装コード　を　受け入れテスト　　で検証
+
+---------------------------------------------------------------------------------
+
+☆LLMに入力して出力を得るモジュール
+☆テストを実行するモジュール
+☆構造からファイルを生成するモジュール

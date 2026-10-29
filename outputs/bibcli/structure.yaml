@@ -1,0 +1,59 @@
+type: Project
+name: BibTEXLibrary
+description: A personal library that manages BibTEX entries in a file named library.bib, persisting entries across runs. The library supports saving, listing, and searching entries.
+
+children:
+
+  - type: Directory
+    name: app
+    description: Contains the main application code.
+    children:
+
+      - type: Module
+        name: Main
+        description: Entry point of the application.
+        children:
+
+          - type: Type
+            name: BibTEXLibrary
+            description: Type alias for the BibTEXLibrary module.
+
+          - type: Method
+            name: main
+            description: Entry point for the program.
+            typeSignature: 'main :: IO ()'
+
+  - type: Directory
+    name: src
+    description: Contains the source code modules.
+    children:
+
+      - type: Module
+        name: BibTEXLibrary
+        description: Main module for managing BibTEX entries.
+        children:
+
+          - type: Type
+            name: BibTEXEntry
+            description: Data type representing a BibTEX entry.
+            typeSignature: 'data BibTEXEntry = BibTEXEntry { content :: String }'
+
+          - type: Method
+            name: saveEntry
+            description: Saves a BibTEX entry to the library.bib file.
+            typeSignature: 'saveEntry :: BibTEXEntry -> IO ()'
+
+          - type: Method
+            name: listEntries
+            description: Lists all BibTEX entries stored in the library.bib file.
+            typeSignature: 'listEntries :: IO [BibTEXEntry]'
+
+          - type: Method
+            name: searchEntry
+            description: Searches for BibTEX entries containing a specific word.
+            typeSignature: 'searchEntry :: String -> IO [BibTEXEntry]'
+
+          - type: Method
+            name: initializeLibraryFile
+            description: Initializes the library.bib file if it does not exist.
+            typeSignature: 'initializeLibraryFile :: IO ()'
